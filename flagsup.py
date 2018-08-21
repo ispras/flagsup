@@ -53,7 +53,7 @@ print('compile dirs (units):')
 for comp_dir in flag_sets[canonical]:
     print("\t%s (%d)" % (comp_dir, len(flag_sets[canonical][comp_dir])))
     if full:
-        for cu in flag_sets[canonical][comp_dir]:
+        for cu in sorted(flag_sets[canonical][comp_dir]):
             print("\t\t%s" % cu)
 print()
 
@@ -69,6 +69,6 @@ for i, producer in enumerate(producers[1:], start=2):
     for comp_dir in flag_sets[producer]:
         print("\t%s (%d)" % (comp_dir, len(flag_sets[producer][comp_dir])))
     if full:
-        for cu in flag_sets[producer][comp_dir]:
+        for cu in sorted(flag_sets[producer][comp_dir]):
             print("\t\t%s" % cu)
     print()
