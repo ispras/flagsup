@@ -51,8 +51,8 @@ print()
 
 for producer,i in zip(producers[1:], count(start=2)):
     print("Diff for flag set %d (%d compile units):" % (i, n_cus(producer)))
-    print("+++:", " ".join(sorted(set(producer.split()) - set(canonical.split()), reverse=True)))
-    print("---:", " ".join(sorted(set(canonical.split()) - set(producer.split()), reverse=True)))
+    print("-", " ".join(sorted(set(canonical.split()) - set(producer.split()), reverse=True)))
+    print("+", " ".join(sorted(set(producer.split()) - set(canonical.split()), reverse=True)))
     print('compile dirs (units):')
     for comp_dir in flag_sets[producer]:
         print("\t%s (%d)" % (comp_dir, len(flag_sets[producer][comp_dir])))
