@@ -2,6 +2,7 @@
 
 import sys
 from itertools import count
+from collections import defaultdict
 
 from elftools.elf.elffile import ELFFile
 
@@ -19,16 +20,14 @@ def process_file(filename):
 
         for cu in dwarfinfo.iter_CUs(): # compile unit
             for die in cu.iter_DIEs(): # debugging information entry
-                try:
-                    comp_dir = die.attributes['DW_AT_comp_dir'].value.decode()
-                    producer = die.attributes['DW_AT_producer'].value.decode()
-                    if producer not in flag_sets:
-                        flag_sets[producer] = {}
-                    if comp_dir not in flag_sets[producer]:
-                        flag_sets[producer][comp_dir] = set()
-                    flag_sets[producer][comp_dir].add(die.get_full_path())
-                except KeyError:
-                    pass
+                comp_dir_obj = die.attributes.get('DW_AT_comp_dir')
+                producer_obj = die.attributes.get('DW_AT_producer')
+                if not comp_dir_obj or not producer_obj:
+                    continue
+                comp_dir = comp_dir_obj.value.decode()
+                producer = producer_obj.value.decode()
+                flag_sets.setdefault(producer, defaultdict(set))
+                flag_sets[producer][comp_dir].add(die.get_full_path())
 
 # XXX: perhaps flag_sets should become an object with fields and mehtods...
 def n_cus(producer):
