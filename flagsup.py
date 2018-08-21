@@ -37,7 +37,14 @@ def n_cus(producer):
 
 flag_sets = {} # producer -> (comp_dir -> set(full_paths))
 
-process_file(sys.argv[1])
+if sys.argv[1] in ("-f", "--full", "-v", "--verbose"):
+    full = True
+    infile = sys.argv[2]
+else:
+    full = False
+    infile = sys.argv[1]
+
+process_file(infile)
 
 producers = sorted(flag_sets, key=n_cus, reverse=True)
 
@@ -47,13 +54,23 @@ print('Canonical compile string (%d compile units): \n%s' %
 print('compile dirs (units):')
 for comp_dir in flag_sets[canonical]:
     print("\t%s (%d)" % (comp_dir, len(flag_sets[canonical][comp_dir])))
+    if full:
+        for cu in flag_sets[canonical][comp_dir]:
+            print("\t\t%s" % cu)
 print()
 
 for producer,i in zip(producers[1:], count(start=2)):
     print("Diff for flag set %d (%d compile units):" % (i, n_cus(producer)))
+    if full:
+        print("---", canonical)
+        print("+++", producer)
+        print("delta:")
     print("-", " ".join(sorted(set(canonical.split()) - set(producer.split()), reverse=True)))
     print("+", " ".join(sorted(set(producer.split()) - set(canonical.split()), reverse=True)))
     print('compile dirs (units):')
     for comp_dir in flag_sets[producer]:
         print("\t%s (%d)" % (comp_dir, len(flag_sets[producer][comp_dir])))
+    if full:
+        for cu in flag_sets[producer][comp_dir]:
+            print("\t\t%s" % cu)
     print()
