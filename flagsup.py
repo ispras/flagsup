@@ -42,6 +42,10 @@ def print_comp_dirs(flag_str, full):
                 print("\t\t%s" % cu)
     print()
 
+def diff_flagsets(flag_str1, flag_str2):
+    return " ".join(sorted(set(flag_str1.split()) - set(flag_str2.split()),
+                           reverse=True))
+
 flag_sets = {} # producer -> (comp_dir -> set(full_paths))
 
 if sys.argv[1] in ("-f", "--full", "-v", "--verbose"):
@@ -66,6 +70,6 @@ for i, producer in enumerate(producers[1:], start=2):
         print("---", canonical)
         print("+++", producer)
         print("delta:")
-    print("-", " ".join(sorted(set(canonical.split()) - set(producer.split()), reverse=True)))
-    print("+", " ".join(sorted(set(producer.split()) - set(canonical.split()), reverse=True)))
+    print("-", diff_flagsets(canonical, producer))
+    print("+", diff_flagsets(producer, canonical))
     print_comp_dirs(producer, full)
