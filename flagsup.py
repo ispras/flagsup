@@ -20,8 +20,8 @@ def process_file(filename):
         for cu in dwarfinfo.iter_CUs(): # compile unit
             for die in cu.iter_DIEs(): # debugging information entry
                 try:
-                    comp_dir = die.attributes['DW_AT_comp_dir'].value
-                    producer = die.attributes['DW_AT_producer'].value
+                    comp_dir = die.attributes['DW_AT_comp_dir'].value.decode()
+                    producer = die.attributes['DW_AT_producer'].value.decode()
                     if producer not in flag_sets:
                         flag_sets[producer] = {}
                     if comp_dir not in flag_sets[producer]:
@@ -51,8 +51,8 @@ print()
 
 for producer,i in zip(producers[1:], count(start=2)):
     print("Diff for flag set %d (%d compile units):" % (i, n_cus(producer)))
-    print("+++:", b" ".join(sorted(set(producer.split()) - set(canonical.split()))))
-    print("---:", b" ".join(sorted(set(canonical.split()) - set(producer.split()))))
+    print("+++:", " ".join(sorted(set(producer.split()) - set(canonical.split()), reverse=True)))
+    print("---:", " ".join(sorted(set(canonical.split()) - set(producer.split()), reverse=True)))
     print('compile dirs (units):')
     for comp_dir in flag_sets[producer]:
         print("\t%s (%d)" % (comp_dir, len(flag_sets[producer][comp_dir])))
