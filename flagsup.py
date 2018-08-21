@@ -20,19 +20,18 @@ def process_file(filename):
             for die in cu.iter_DIEs(): # debugging information entry
                 try:
                     comp_dir = die.attributes['DW_AT_comp_dir'].value
-                    if comp_dir not in flag_sets:
-                        flag_sets[comp_dir] = {}
                     producer = die.attributes['DW_AT_producer'].value
-                    if producer not in flag_sets[comp_dir]:
-                        flag_sets[comp_dir][producer] = []
-                    flag_sets[comp_dir][producer] += [die.get_full_path()]
+                    if producer not in flag_sets:
+                        flag_sets[producer] = set()
+                    flag_sets[producer].add(comp_dir)
                 except KeyError:
                     pass
 
-flag_sets = {} # comp_dir -> (producer -> [full_paths])
+flag_sets = {} # producer -> set(comp_dirs)
 
 process_file(sys.argv[1])
 
-for comp_dir in flag_sets:
-    for producer in flag_sets[comp_dir]:
-        print ("%s : %d" % (producer, len(flag_sets[comp_dir][producer])))
+for producer in flag_sets:
+    print(producer)
+    for comp_dir in flag_sets[producer]:
+        print ("\t%s" % comp_dir)
