@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-from itertools import count
 from collections import defaultdict
 
 from elftools.elf.elffile import ELFFile
@@ -58,7 +57,7 @@ for comp_dir in flag_sets[canonical]:
             print("\t\t%s" % cu)
 print()
 
-for producer,i in zip(producers[1:], count(start=2)):
+for i, producer in enumerate(producers[1:], start=2):
     print("Diff for flag set %d (%d compile units):" % (i, n_cus(producer)))
     if full:
         print("---", canonical)
