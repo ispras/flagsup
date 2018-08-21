@@ -33,6 +33,15 @@ def n_cus(producer):
     global flag_sets
     return sum(len(flag_sets[producer][paths]) for paths in flag_sets[producer])
 
+def print_comp_dirs(flag_str, full):
+    print('compile dirs (units):')
+    for comp_dir in flag_sets[flag_str]:
+        print("\t%s (%d)" % (comp_dir, len(flag_sets[flag_str][comp_dir])))
+        if full:
+            for cu in sorted(flag_sets[flag_str][comp_dir]):
+                print("\t\t%s" % cu)
+    print()
+
 flag_sets = {} # producer -> (comp_dir -> set(full_paths))
 
 if sys.argv[1] in ("-f", "--full", "-v", "--verbose"):
@@ -49,13 +58,7 @@ producers = sorted(flag_sets, key=n_cus, reverse=True)
 canonical = producers[0]
 print('Canonical compile string (%d compile units): \n%s' %
       (n_cus(canonical), canonical))
-print('compile dirs (units):')
-for comp_dir in flag_sets[canonical]:
-    print("\t%s (%d)" % (comp_dir, len(flag_sets[canonical][comp_dir])))
-    if full:
-        for cu in sorted(flag_sets[canonical][comp_dir]):
-            print("\t\t%s" % cu)
-print()
+print_comp_dirs(canonical, full)
 
 for i, producer in enumerate(producers[1:], start=2):
     print("Diff for flag set %d (%d compile units):" % (i, n_cus(producer)))
@@ -65,10 +68,4 @@ for i, producer in enumerate(producers[1:], start=2):
         print("delta:")
     print("-", " ".join(sorted(set(canonical.split()) - set(producer.split()), reverse=True)))
     print("+", " ".join(sorted(set(producer.split()) - set(canonical.split()), reverse=True)))
-    print('compile dirs (units):')
-    for comp_dir in flag_sets[producer]:
-        print("\t%s (%d)" % (comp_dir, len(flag_sets[producer][comp_dir])))
-    if full:
-        for cu in sorted(flag_sets[producer][comp_dir]):
-            print("\t\t%s" % cu)
-    print()
+    print_comp_dirs(producer, full)
