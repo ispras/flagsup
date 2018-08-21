@@ -30,11 +30,15 @@ def process_file(filename):
                 except KeyError:
                     pass
 
+# XXX: perhaps flag_sets should become an object with fields and mehtods...
+def n_cus(producer):
+    global flag_sets
+    return sum(len(flag_sets[producer][paths]) for paths in flag_sets[producer])
+
 flag_sets = {} # producer -> (comp_dir -> set(full_paths))
 
 process_file(sys.argv[1])
 
-n_cus = lambda x: sum(len(paths) for paths in flag_sets[x])
 producers = sorted(flag_sets, key=n_cus, reverse=True)
 
 canonical = producers[0]
