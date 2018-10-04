@@ -59,6 +59,10 @@ process_file(infile)
 
 producers = sorted(flag_sets, key=n_cus, reverse=True)
 
+if len(producers) < 1:
+    print('%s: no DW_AT_producer strings found in `%s`.'
+          % (sys.argv[0], infile), 'Make sure the file has debug information.')
+    exit(1)
 canonical = producers[0]
 print('Canonical compile string (%d compile units): \n%s' %
       (n_cus(canonical), canonical))
