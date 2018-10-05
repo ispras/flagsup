@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-import itertools
+import re
 from collections import defaultdict
 
 from elftools.elf.elffile import ELFFile
@@ -43,26 +43,12 @@ def print_comp_dirs(flag_str, full):
                 print("\t\t%s" % cu)
     print()
 
-def param_split(flag_str):
-    """Split a flag string, glueing "--param" to its argument.
+param_with_arg = re.compile('--param\s+\S+')
 
-    Accept a string of flags (space separated), return a list like
-    `split` result, only with "--param" "<x>" melded into one element
-    "--param <x>".
-    """
-    split = flag_str.split()
-    res = []
-    saw_param = False
-    for i, j in itertools.zip_longest(split, split[1:]):
-        if saw_param:
-            saw_param = False
-            continue
-        if i == "--param":
-            saw_param = True
-            res += [i + " " + j]
-        else:
-            res += [i]
-    return res
+def param_split(flag_str):
+    """Split a flag string, glueing "--param" to its argument."""
+    return (re.findall(param_with_arg, flag_str) +
+            re.sub(param_with_arg, '', flag_str).split())
 
 def diff_flagsets(flag_str1, flag_str2):
     return " ".join(sorted(set(param_split(flag_str1)) -
