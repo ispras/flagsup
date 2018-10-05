@@ -1,4 +1,4 @@
-# purpose and usage
+# Purpose and usage
 
 **flagsup** is a compiler flags extractor and summarizer.  It answers the
 question "what flags were up?"—during compilation that is—and presents a summary
@@ -15,12 +15,12 @@ used for compilation of different subsystems differ.
 **flagsup** has 2 modes: with and without the `--full` option.  The output
 format is meant for humans and strives to be self-explanatory.
 
-# dependencies
+# Dependencies
 
 - python 3.x
 - [pyelftools](https://github.com/eliben/pyelftools)
 
-# implementation details
+# Implementation details
 
 The tool is written in Python3 though it would not be hard to support Python2 as
 well, shall it be needed.
