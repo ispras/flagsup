@@ -1,4 +1,5 @@
-# Purpose and usage
+# Build flags extractor and summarizer
+## Purpose and usage
 
 **flagsup** is a compiler flags extractor and summarizer.  It answers the
 question "what flags were up?"—during compilation that is—and presents a summary
@@ -15,17 +16,17 @@ used for compilation of different subsystems differ.
 **flagsup** has 2 modes: with and without the `--full` option.  The output
 format is meant for humans and strives to be self-explanatory.
 
-# Dependencies
+## Dependencies
 
 - python 3.x
 - [pyelftools](https://github.com/eliben/pyelftools)
 
-# Example output
+## Example output
 
 Here is the ouptut of flagsup (run without the `--full` switch) on a debug
 build of the GNU C compiler executable (`cc1`).
 
-```
+```shell
 Canonical compile string (434 compile units):
 GNU C++14 8.2.1 20180831 -mtune=generic -march=x86-64 -g3 -O0 -fno-PIE -fno-exceptions -fno-rtti -fasynchronous-unwind-tables
 compile dirs (units):

@@ -1,0 +1,11 @@
+a[href]:after { content : "" }
+body {
+    font-size: 0.625em;
+}
+pre, xmp, plaintext {
+    white-space: pre-wrap;
+    background: hsl(0,0%,95%);
+    border: 0;
+    page-break-inside: auto;
+    page-break-before: avoid;
+}
