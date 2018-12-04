@@ -20,6 +20,52 @@ format is meant for humans and strives to be self-explanatory.
 - python 3.x
 - [pyelftools](https://github.com/eliben/pyelftools)
 
+# Example output
+
+Here is the ouptut of flagsup (run without the `--full` switch) on a debug
+build of the GNU C compiler executable (`cc1`).
+
+```
+Canonical compile string (434 compile units):
+GNU C++14 8.2.1 20180831 -mtune=generic -march=x86-64 -g3 -O0 -fno-PIE -fno-exceptions -fno-rtti -fasynchronous-unwind-tables
+compile dirs (units):
+	/mnt/bld/gcc-trunk/gcc (434)
+
+Diff for flag set 2 (41 compile units):
+- C++14 -g3 -fno-rtti -fno-exceptions -fno-PIE -fasynchronous-unwind-tables -O0
++ C17 -g -O2
+compile dirs (units):
+	/mnt/bld/gcc-trunk/libiberty (33)
+	/mnt/bld/gcc-trunk/zlib (8)
+
+Diff for flag set 3 (15 compile units):
+- -fno-PIE -fasynchronous-unwind-tables
++
+compile dirs (units):
+	/mnt/bld/gcc-trunk/libcpp (15)
+
+Diff for flag set 4 (5 compile units):
+- C++14 -g3 -fno-rtti -fno-exceptions -fno-PIE -fasynchronous-unwind-tables -O0
++ C17 -g -fno-lto -O2
+compile dirs (units):
+	/mnt/bld/gcc-trunk/libdecnumber (5)
+
+Diff for flag set 5 (1 compile units):
+- C++14 -g3 -fno-rtti -fno-exceptions -fno-PIE -fasynchronous-unwind-tables -O0
++ C17 -g -funwind-tables -frandom-seed=state.lo -fPIC -O2
+compile dirs (units):
+	/mnt/bld/gcc-trunk/libbacktrace (1)
+
+Diff for flag set 6 (1 compile units):
+- C++14 -g3 -fno-rtti -fno-exceptions -fno-PIE -fasynchronous-unwind-tables -O0
++ C17 -g -funwind-tables -frandom-seed=backtrace.lo -fPIC -O2
+compile dirs (units):
+	/mnt/bld/gcc-trunk/libbacktrace (1)
+
+  ...
+
+```
+
 # Implementation details
 
 The tool is written in Python3 though it would not be hard to support Python2 as
